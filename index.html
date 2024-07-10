@@ -16,6 +16,41 @@
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script>
     <script src="assets/js/mdtimepicker.js"></script>
+    <script>
+        // Your Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDB3oo9myJ20arz8UCGFwLN4nwGU2gd36I",
+            authDomain: "fish-fiddingo.firebaseapp.com",
+            databaseURL: "https://fish-fiddingo-default-rtdb.firebaseio.com",
+            projectId: "fish-fiddingo",
+            storageBucket: "fish-fiddingo.appspot.com",
+            messagingSenderId: "1043882664518",
+            appId: "1:1043882664518:web:8ddc80848dd83bc9cc6047",
+            measurementId: "G-YE77ED9N8Q"
+        };
+        
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Clock functionality
+        function updateClock() {
+            const now = new Date();
+            const seconds = now.getSeconds();
+            const minutes = now.getMinutes();
+            const hours = now.getHours();
+
+            const secondsDegrees = (seconds / 60) * 360;
+            const minutesDegrees = (minutes / 60) * 360;
+            const hoursDegrees = (hours / 12) * 360 + (minutes / 60) * 30; // adding minutes for smoother hour hand
+
+            document.querySelector('.hand.seconds').style.transform = `rotate(${secondsDegrees}deg)`;
+            document.querySelector('.hand.minutes').style.transform = `rotate(${minutesDegrees}deg)`;
+            document.querySelector('.hand.hours').style.transform = `rotate(${hoursDegrees}deg)`;
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock(); // initial call to set clock immediately
+    </script>
     <!-- Google reCAPTCHA Enterprise -->
     <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lc0gQgqAAAAAG9GL8dAOX-U-MxQAkAQYKifLdow"></script>
 </head>
@@ -52,32 +87,15 @@
         </div>
     </div>
 
-    <!-- Firebase initialization scripts -->
-    <script>
-        // Your web app's Firebase configuration
-        var firebaseConfig = {
-            apiKey: "AIzaSyA_kXbMOP_naPxmzPBv1hfMQNeZwh89ikY",
-            authDomain: "fish-fiddingo.firebaseapp.com",
-            databaseURL: "https://fish-fiddingo.firebaseio.com",
-            projectId:"fish-fiddingo",
-            storageBucket: "fish-fiddingo.appspot.com",
-            messagingSenderId: "1043882664518",
-            appId: "1:1043882664518:web:8ddc80848dd83bc9cc6047",
-            measurementId: "G-YE77ED9N8Q"
-        };
-        
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-
-        // Optional: Initialize other Firebase services here if needed
-    </script>
-
+    <!-- Script for reCAPTCHA verification and Firebase interaction -->
     <script>
         async function feednow() {
             // Initialize reCAPTCHA
             grecaptcha.enterprise.ready(async () => {
                 try {
-                    const token = await grecaptcha.enterprise.execute('6Lc0gQgqAAAAAG9GL8dAOX-U-MxQAkAQYKifLdow', { action: 'feednow' });
+                    const token = await grecaptcha.enterprise.execute('6Lc0gQgqAAAAAG9GL8dAOX-U-MxQAkAQYKifLdow', {
+                        action: 'feednow'
+                    });
                     console.log('reCAPTCHA Token:', token);
 
                     // Prepare the request body with the obtained token and action
@@ -120,7 +138,6 @@
             console.log('Writing to Firebase...');
         }
     </script>
-
     <script id="rendered-js" src="assets/js/script.js"></script>
     <script src="assets/js/mdtimepicker.js"></script>
 </body>
